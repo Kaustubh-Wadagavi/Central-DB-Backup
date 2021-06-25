@@ -10,29 +10,19 @@ declare -a DB_NAMES=(
 		     "kmc_os"
 		    )
 
-# Declared Dump storing paths
-declare -a DB_PATHS=(
-                     "/home/krishagni/Desktop/demo_backup"
-	             "/home/krishagni/Desktop/nih_backup"
-                     "/home/krishagni/Desktop/kmc_database_backups"
-		     )
-
-# Declared the file names
-declare -a DB_FILES=(
-                     "DEMO_OPENSPECIMEN"
-		     "NIH_OPENSPECIMEN"
-		     "KMC_OPENSPECIMEN"
-	            )
-
-TakeBackup()
+takeBackup()
 {
-   for index in ${!DB_NAMES[*]}; do 
-   echo ""
-   echo "Tacking ${DB_FILES[$index]} DB Backup"
-   mysqldump -u$DB_USER -p$DB_PASS --single-transaction --skip-lock-tables --routines "${DB_NAMES[$index]}" | gzip > ${DB_PATHS[$index]}/${DB_FILES[$index]}_`date +\%d-\%m-\%Y`.SQL.gz
-   echo  "Deleting the older 30 day files of ${DB_FILES[$index]}"
-   find ${DB_PATHS[$index]}/ -mtime +30 -exec rm {} \;
-done
+   for index in ${!DB_NAMES[*]} 
+   do 
+     echo ""
+     echo "Tacking ${DB_NAMES[$index]} Backup"
+     mysqldump -u$DB_USER -p$DB_PASS --single-transaction --skip-lock-tables --routines "${DB_NAMES[$index]}" | gzip > /home/krishagni/Desktop/Backups/${DB_NAMES[$index]}_`date +\%d-\%m-\%Y`.SQL.gz
+   	
+     echo  "Deleting 30 days older files from Backups"
+     find /home/krishagni/Desktop/Backups/ -mtime +30 -exec rm {} \;
+
+  done
 }
+
 #Script Starts from here
-TakeBackup
+takeBackup
