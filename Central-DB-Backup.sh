@@ -21,7 +21,7 @@ takeBackup()
      echo  "Deleting 30 days older files from Backups"
      find /home/krishagni/Desktop/Backups/ -mtime +30 -exec rm {} \;
 
-  done
+   done
 }
 
 #Script Starts from here
